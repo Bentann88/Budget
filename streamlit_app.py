@@ -52,7 +52,7 @@ st.session_state[data_key] = {
 
 # --- Summary Section ---
 st.markdown("---")
-st.subheader("📈 Summary")
+st.subheader("Summary")
 st.metric(label="Left to Budget", value=f"${left_to_budget:,.2f}")
 st.metric(label="Net Worth", value=f"${net_worth:,.2f}")
 st.metric(label="Total Investments", value=f"${investments:,.2f}")
@@ -60,17 +60,19 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 
 # --- Chart Section ---
 st.markdown("---")
-st.subheader("📊 Cash Flow")
-fig, ax = plt.subplots(figsize=(15, 14))
+st.subheader("Cash Flow")
+fig, ax = plt.subplots(figsize=(4, 3))  # Smaller figure size
 labels = ["Income", "Expenses"]
 values = [income, expenses]
 colors = ['#4CAF50', '#F44336']
-ax.bar(labels, values, color=colors)
+bar_width = 0.4  # Thinner bars
+ax.bar(labels, values, color=colors, width=bar_width)
 ax.set_ylabel("Amount ($)")
 ax.set_title("Income vs Expenses")
 for i, v in enumerate(values):
-    ax.text(i, v + max(values)*0.02, f"${v:,.0f}", ha='center', fontsize=5)
+    ax.text(i, v + max(values)*0.02, f"${v:,.0f}", ha='center', fontsize=9)  # Increased font size for readability
 st.pyplot(fig)
+
 
 st.markdown(f"**Balance:** ${balance:,.2f}")
 
