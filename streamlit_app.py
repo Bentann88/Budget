@@ -36,6 +36,7 @@ debt = st.number_input("Total Debt", min_value=0.0, value=3000.0, step=100.0, ke
 
 # --- Calculations ---
 left_to_budget = income - expenses - savings
+balance = income - expenses
 
 # Store in session state
 st.session_state[data_key] = {
@@ -59,21 +60,19 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 
 # --- Chart Section ---
 st.markdown("---")
-st.subheader("📊 Visual Breakdown")
-chart_data = pd.DataFrame({
-    "Category": ["Income", "Expenses", "Savings", "Debt"],
-    "Amount": [income, expenses, savings, debt]
-})
-
-chart_data = chart_data[chart_data["Amount"] > 0]
-
-fig, ax = plt.subplots(figsize=(6, 3))
-ax.barh(chart_data["Category"], chart_data["Amount"], color=['#4CAF50', '#F44336', '#2196F3', '#9C27B0'])
-ax.set_xlabel("Amount ($)")
-ax.set_title("Monthly Financial Snapshot")
-for i in ax.patches:
-    ax.text(i.get_width() + 50, i.get_y() + 0.3, f"${i.get_width():,.0f}", fontsize=8)
+st.subheader("📊 Cash Flow")
+fig, ax = plt.subplots(figsize=(5, 4))
+labels = ["Income", "Expenses"]
+values = [income, expenses]
+colors = ['#4CAF50', '#F44336']
+ax.bar(labels, values, color=colors)
+ax.set_ylabel("Amount ($)")
+ax.set_title("Income vs Expenses")
+for i, v in enumerate(values):
+    ax.text(i, v + max(values)*0.02, f"${v:,.0f}", ha='center', fontsize=10)
 st.pyplot(fig)
+
+st.markdown(f"**Balance:** ${balance:,.2f}")
 
 # --- Historical View ---
 st.markdown("---")
