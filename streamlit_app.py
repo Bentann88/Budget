@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Budget Dashboard", layout="centered")
 
-st.title("📊 Personal Budget & Net Worth Tracker")
+st.title("Budget & Net Worth Tracker")
 st.markdown("Enter your financial details below. Your summary and charts will update automatically.")
 
 # --- Input Sections ---
@@ -69,7 +69,7 @@ ax.bar(labels, values, color=colors)
 ax.set_ylabel("Amount ($)")
 ax.set_title("Income vs Expenses")
 for i, v in enumerate(values):
-    ax.text(i, v + max(values)*0.02, f"${v:,.0f}", ha='center', fontsize=10)
+    ax.text(i, v + max(values)*0.02, f"${v:,.0f}", ha='center', fontsize=5)
 st.pyplot(fig)
 
 st.markdown(f"**Balance:** ${balance:,.2f}")
