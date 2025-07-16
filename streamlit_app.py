@@ -17,7 +17,18 @@ if data_key not in st.session_state:
     st.session_state[data_key] = {}
 
 income = st.number_input("Monthly Income", min_value=0.0, value=5000.0, step=100.0, key=f"income_{month}")
-expenses = st.number_input("Total Monthly Expenses", min_value=0.0, value=2500.0, step=100.0, key=f"expenses_{month}")
+
+st.subheader("Detailed Expenses")
+rent = st.number_input("Rent", min_value=0.0, value=1200.0, step=50.0, key=f"rent_{month}")
+utilities = st.number_input("Utilities", min_value=0.0, value=150.0, step=25.0, key=f"utilities_{month}")
+car_payment = st.number_input("Car Payment", min_value=0.0, value=300.0, step=25.0, key=f"car_{month}")
+gas = st.number_input("Gas", min_value=0.0, value=200.0, step=25.0, key=f"gas_{month}")
+groceries = st.number_input("Groceries", min_value=0.0, value=400.0, step=25.0, key=f"groceries_{month}")
+subscriptions = st.number_input("Subscriptions", min_value=0.0, value=100.0, step=10.0, key=f"subs_{month}")
+other_expenses = st.number_input("Other Expenses", min_value=0.0, value=150.0, step=10.0, key=f"other_{month}")
+
+expenses = rent + utilities + car_payment + gas + groceries + subscriptions + other_expenses
+
 savings = st.number_input("Monthly Savings", min_value=0.0, value=500.0, step=100.0, key=f"savings_{month}")
 investments = st.number_input("Total Investment Value", min_value=0.0, value=10000.0, step=500.0, key=f"investments_{month}")
 net_worth = st.number_input("Total Net Worth", min_value=0.0, value=15000.0, step=500.0, key=f"networth_{month}")
@@ -54,7 +65,9 @@ chart_data = pd.DataFrame({
     "Amount": [income, expenses, savings, debt]
 })
 
-fig, ax = plt.subplots()
+chart_data = chart_data[chart_data["Amount"] > 0]
+
+fig, ax = plt.subplots(figsize=(4, 4))
 ax.pie(chart_data["Amount"], labels=chart_data["Category"], autopct='%1.1f%%', startangle=90)
 ax.axis('equal')
 st.pyplot(fig)
@@ -72,8 +85,14 @@ if not history_df.empty:
 st.markdown("---")
 st.subheader("📤 Export Current Month")
 data = {
-    "Category": ["Income", "Expenses", "Savings", "Investments", "Net Worth", "Debt"],
-    "Amount": [income, expenses, savings, investments, net_worth, debt]
+    "Category": [
+        "Income", "Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other Expenses", "Total Expenses",
+        "Savings", "Investments", "Net Worth", "Debt"
+    ],
+    "Amount": [
+        income, rent, utilities, car_payment, gas, groceries, subscriptions, other_expenses, expenses,
+        savings, investments, net_worth, debt
+    ]
 }
 df = pd.DataFrame(data)
 
