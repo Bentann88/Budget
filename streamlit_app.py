@@ -61,7 +61,7 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 # --- Chart Section ---
 st.markdown("---")
 st.subheader("📊 Cash Flow")
-fig, ax = plt.subplots(figsize=(1, 2))
+fig, ax = plt.subplots(figsize=(15, 14))
 labels = ["Income", "Expenses"]
 values = [income, expenses]
 colors = ['#4CAF50', '#F44336']
