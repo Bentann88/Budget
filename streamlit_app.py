@@ -67,9 +67,12 @@ chart_data = pd.DataFrame({
 
 chart_data = chart_data[chart_data["Amount"] > 0]
 
-fig, ax = plt.subplots(figsize=(4, 4))
-ax.pie(chart_data["Amount"], labels=chart_data["Category"], autopct='%1.1f%%', startangle=90)
-ax.axis('equal')
+fig, ax = plt.subplots(figsize=(6, 3))
+ax.barh(chart_data["Category"], chart_data["Amount"], color=['#4CAF50', '#F44336', '#2196F3', '#9C27B0'])
+ax.set_xlabel("Amount ($)")
+ax.set_title("Monthly Financial Snapshot")
+for i in ax.patches:
+    ax.text(i.get_width() + 50, i.get_y() + 0.3, f"${i.get_width():,.0f}", fontsize=8)
 st.pyplot(fig)
 
 # --- Historical View ---
