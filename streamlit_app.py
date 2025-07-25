@@ -87,9 +87,9 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Minimal Horizontal Bar Chart for Spending Categories ---
 st.markdown("<div class='section-box'><h4> Expense Category Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(2, 1))  # Reduced size further
+fig, ax = plt.subplots(figsize=(1, 1))  # Reduced size further
 ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
-ax.set_xlabel("Amount ($)", fontsize=4)
+ax.set_xlabel("Amount ($)", fontsize=2)
 ax.set_yticklabels(expense_df["Category"], fontsize=.25)
 ax.tick_params(axis='x', labelsize=2.5)
 ax.tick_params(axis='y', labelsize=2.5)
