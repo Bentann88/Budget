@@ -10,7 +10,7 @@ st.markdown("""
         html, body, [class*="css"]  {
             font-family: 'Montserrat', sans-serif;
             background-color: #f5faff;
-            color: #222;
+            color: #000;
         }
         .title-box {
             background-color: #cce5ff;
@@ -27,12 +27,12 @@ st.markdown("""
         .metric-box {
             font-size: 18px !important;
             font-weight: 500 !important;
-            color: #222 !important;
+            color: #000 !important;
         }
         .section-box h4 {
             font-size: 22px !important;
             font-weight: 600 !important;
-            color: #222 !important;
+            color: #000 !important;
             margin-bottom: 10px;
         }
     </style>
