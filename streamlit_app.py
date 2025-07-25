@@ -52,7 +52,7 @@ with st.container():
         country = st.selectbox("Country", ["United States", "Canada", "UK"])
 
 # --- Cash Flow Summary ---
-st.markdown("<div class='section-box'><h4>💵 Cash Flow Summary</h4>", unsafe_allow_html=True)
+st.markdown("<div class='section-box'><h4> Cash Flow Summary</h4>", unsafe_allow_html=True)
 income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0)
 bills = st.number_input("Bills", min_value=0.0, value=1200.0, step=50.0)
 debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
@@ -86,8 +86,8 @@ st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Minimal Horizontal Bar Chart for Spending Categories ---
-st.markdown("<div class='section-box'><h4>📊 Expense Category Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(2.5, 1.5))  # Reduced size further
+st.markdown("<div class='section-box'><h4> Expense Category Breakdown</h4>", unsafe_allow_html=True)
+fig, ax = plt.subplots(figsize=(.05, 0.25))  # Reduced size further
 ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
 ax.set_xlabel("Amount ($)", fontsize=6)
 ax.set_yticklabels(expense_df["Category"], fontsize=5)
