@@ -1,19 +1,27 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib as mpl
 
 st.set_page_config(page_title="Budget Dashboard", layout="centered")
 
-# --- Styling ---
+# --- Custom Styling ---
 st.markdown("""
     <style>
-    .main {
-        background-color: #f0f8ff; /* light blue background */
-        color: #000000;
+    html, body, [class*="css"]  {
+        font-family: 'Montserrat', sans-serif;
+        background-color: #f2f9ff;
+        color: #1a1a1a;
     }
     .stApp {
-        background-color: #ffffff; /* white outer background */
+        padding: 2rem;
+    }
+    .stNumberInput > div > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
+    }
+    .stSelectbox > div > div {
+        background-color: #ffffff !important;
+        color: #000000 !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -75,11 +83,11 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 # --- Chart Section ---
 st.markdown("---")
 st.subheader("Cash Flow")
-fig, ax = plt.subplots(figsize=(3, 2.2))
+fig, ax = plt.subplots(figsize=(3, 2.2))  # More compact size
 labels = ["Income", "Expenses"]
 values = [income, expenses]
 colors = ['#4CAF50', '#F44336']
-bar_width = 0.2
+bar_width = 0.2  # Thinner bars
 x = range(len(labels))
 bars = ax.bar(x, values, color=colors, width=bar_width)
 ax.set_xticks(x)
@@ -99,26 +107,6 @@ for bar in bars:
 st.pyplot(fig)
 
 st.markdown(f"**Balance:** ${balance:,.2f}")
-
-# --- Expense Breakdown Chart ---
-st.subheader("Spending by Category")
-category_labels = ["Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other"]
-category_values = [rent, utilities, car_payment, gas, groceries, subscriptions, other_expenses]
-fig2, ax2 = plt.subplots(figsize=(4.5, 2.5))
-bar_colors = plt.cm.Blues(range(100, 100 + 10*len(category_labels), 10))
-bar_positions = range(len(category_labels))
-bars2 = ax2.barh(bar_positions, category_values, color=bar_colors)
-ax2.set_yticks(bar_positions)
-ax2.set_yticklabels(category_labels, fontsize=8)
-ax2.invert_yaxis()
-ax2.set_xlabel("Amount ($)", fontsize=8)
-ax2.set_title("Spending by Category", fontsize=10)
-for i, v in enumerate(category_values):
-    ax2.text(v + max(category_values)*0.01, i, f"${v:,.0f}", va='center', fontsize=8)
-ax2.spines['top'].set_visible(False)
-ax2.spines['right'].set_visible(False)
-ax2.tick_params(axis='x', labelsize=8)
-st.pyplot(fig2)
 
 # --- Historical View ---
 st.markdown("---")
