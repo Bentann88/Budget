@@ -13,7 +13,7 @@ st.markdown("""
             color: #222;
         }
         .title-box {
-            background-color: #ffccd5;
+            background-color: #cce5ff;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
