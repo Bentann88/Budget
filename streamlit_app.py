@@ -25,8 +25,8 @@ st.markdown("""
             margin-bottom: 15px;
         }
         .metric-box {
-            font-size: 28px !important;
-            font-weight: 600 !important;
+            font-size: 20px !important;
+            font-weight: 500 !important;
             color: #222 !important;
         }
     </style>
@@ -59,7 +59,7 @@ st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Expenses Inputs ---
-st.markdown("<div class='section-box'><h4>🗵️ Detailed Expenses</h4>", unsafe_allow_html=True)
+st.markdown("<div class='section-box'><h4>🗕️ Detailed Expenses</h4>", unsafe_allow_html=True)
 expense_data = {
     "Groceries": st.number_input("Groceries", min_value=0.0, value=300.0, step=10.0),
     "Restaurant": st.number_input("Restaurant", min_value=0.0, value=150.0, step=10.0),
@@ -77,4 +77,16 @@ expense_df = pd.DataFrame(list(expense_data.items()), columns=["Category", "Amou
 total_expenses = expense_df["Amount"].sum()
 st.dataframe(expense_df.style.format({"Amount": "$ {:.2f}"}))
 st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:,.2f}</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# --- Minimal Horizontal Bar Chart for Spending Categories ---
+st.markdown("<div class='section-box'><h4>📊 Expense Category Breakdown</h4>", unsafe_allow_html=True)
+fig, ax = plt.subplots(figsize=(4, 2))  # Small, minimal footprint
+ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
+ax.set_xlabel("Amount ($)", fontsize=8)
+ax.set_yticklabels(expense_df["Category"], fontsize=6)
+ax.set_xticks([])  # Optional: hide x-axis ticks for minimal look
+for i, v in enumerate(expense_df["Amount"]):
+    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=6)
+st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
