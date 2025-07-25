@@ -91,8 +91,8 @@ fig, ax = plt.subplots(figsize=(2, 1))  # Reduced size further
 ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
 ax.set_xlabel("Amount ($)", fontsize=4)
 ax.set_yticklabels(expense_df["Category"], fontsize=.25)
-ax.tick_params(axis='x', labelsize=2)
-ax.tick_params(axis='y', labelsize=2)
+ax.tick_params(axis='x', labelsize=2.5)
+ax.tick_params(axis='y', labelsize=2.5)
 ax.set_xticks([])  # Optional: hide x-axis ticks for minimal look
 for i, v in enumerate(expense_df["Amount"]):
     ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=5)
