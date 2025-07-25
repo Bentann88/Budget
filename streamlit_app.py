@@ -95,6 +95,6 @@ ax.tick_params(axis='x', labelsize=2.5)
 ax.tick_params(axis='y', labelsize=2.5)
 ax.set_xticks([])  # Optional: hide x-axis ticks for minimal look
 for i, v in enumerate(expense_df["Amount"]):
-    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=5)
+    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=3)
 st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
