@@ -111,7 +111,7 @@ labels = ['Savings', 'Bills', 'Discretionary']
 values = [savings, total_bills, total_spending]
 colors = ['#A5D8FF', '#74C0FC', '#4DABF7']
 fig2, ax2 = plt.subplots(figsize=(.5, .5))
-ax2.pie(values, labels=labels, colors=colors, startangle=90, autopct='%1.1f%%', textprops={'fontsize': 6})
+ax2.pie(values, labels=labels, colors=colors, startangle=30, autopct='%1.1f%%', textprops={'fontsize': 6})
 ax2.axis('equal')
 st.pyplot(fig2)
 st.markdown("</div>", unsafe_allow_html=True)
