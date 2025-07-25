@@ -39,7 +39,7 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # --- Header ---
-st.markdown("<div class='title-box'><h2 style='color: #007BFF;'>📊 Monthly Budget Summary</h2></div>", unsafe_allow_html=True)
+st.markdown("<div class='title-box'><h2 style='color: #000;'>📊 Monthly Budget Summary</h2></div>", unsafe_allow_html=True)
 
 # --- Month / Country Info ---
 with st.container():
