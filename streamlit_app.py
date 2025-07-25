@@ -51,10 +51,11 @@ with st.container():
     with col3:
         country = st.selectbox("Country", ["United States", "Canada", "UK"])
 
-# --- Cash Flow Summary ---
-st.markdown("<div class='section-box'><h4>💵 Cash Flow Summary</h4>", unsafe_allow_html=True)
+# --- Income & Savings ---
+st.markdown("<div class='section-box'><h4>💵 Income & Savings</h4>", unsafe_allow_html=True)
 income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
+st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Bills Section ---
 st.markdown("<div class='section-box'><h4>📑 Fixed Bills</h4>", unsafe_allow_html=True)
@@ -71,15 +72,8 @@ st.dataframe(bills_df.style.format({"Amount": "$ {:.2f}"}))
 st.markdown(f"<div class='metric-box'>Total Bills: ${total_bills:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
+# --- Debt ---
 debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
-total_outflow = total_bills + debt + savings
-remaining = income - total_outflow
-savings_rate = (savings / income * 100) if income > 0 else 0
-
-st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:32px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
-st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>", unsafe_allow_html=True)
-st.markdown(f"<div class='metric-box'>Savings Rate: {savings_rate:.1f}%</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Spending (Discretionary) ---
 st.markdown("<div class='section-box'><h4>🛍️ Discretionary Spending</h4>", unsafe_allow_html=True)
@@ -94,26 +88,32 @@ spending_data = {
     "Health & Medical": st.number_input("Health & Medical", min_value=0.0, value=75.0, step=10.0),
     "Personal Care": st.number_input("Personal Care", min_value=0.0, value=90.0, step=10.0)
 }
-
-# Convert to DataFrame for display
 spending_df = pd.DataFrame(list(spending_data.items()), columns=["Category", "Amount"])
 total_spending = spending_df["Amount"].sum()
 st.dataframe(spending_df.style.format({"Amount": "$ {:.2f}"}))
 st.markdown(f"<div class='metric-box'>Total Discretionary Spending: ${total_spending:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Minimal Horizontal Bar Chart for Spending Categories ---
-st.markdown("<div class='section-box'><h4>📊 Spending Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(3.5, 1.8))
-ax.barh(spending_df["Category"], spending_df["Amount"], color="#90caf9")
-ax.set_xlabel("Amount ($)", fontsize=6)
-ax.set_yticklabels(spending_df["Category"], fontsize=5)
-ax.tick_params(axis='x', labelsize=5)
-ax.tick_params(axis='y', labelsize=5)
-ax.set_xticks([])
-for i, v in enumerate(spending_df["Amount"]):
-    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=5)
-st.pyplot(fig)
+# --- Cash Flow Summary ---
+st.markdown("<div class='section-box'><h4>📈 Cash Flow Summary</h4>", unsafe_allow_html=True)
+total_outflow = total_bills + total_spending + debt + savings
+remaining = income - total_outflow
+savings_rate = (savings / income * 100) if income > 0 else 0
+
+st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:32px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
+st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='metric-box'>Savings Rate: {savings_rate:.1f}%</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+# --- Pie Chart Breakdown ---
+st.markdown("<div class='section-box'><h4>📊 Allocation of Income</h4>", unsafe_allow_html=True)
+labels = ['Savings', 'Bills', 'Discretionary']
+values = [savings, total_bills, total_spending]
+colors = ['#A5D8FF', '#74C0FC', '#4DABF7']
+fig2, ax2 = plt.subplots(figsize=(1.5, 1.5))
+ax2.pie(values, labels=labels, colors=colors, startangle=90, autopct='%1.1f%%', textprops={'fontsize': 6})
+ax2.axis('equal')
+st.pyplot(fig2)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Optional Export Button ---
