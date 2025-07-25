@@ -1,16 +1,16 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 
 st.set_page_config(page_title="Monthly Budget", layout="wide")
 
-# --- Custom CSS for color styling and Montserrat font ---
+# --- Custom CSS for pastel labels, Montserrat font, and consistent layout ---
 st.markdown("""
     <style>
         html, body, [class*="css"]  {
             font-family: 'Montserrat', sans-serif;
             background-color: #f5faff;
+            color: #222;
         }
         .title-box {
             background-color: #ffccd5;
@@ -23,6 +23,11 @@ st.markdown("""
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
+        }
+        .metric-box {
+            font-size: 28px !important;
+            font-weight: 600 !important;
+            color: #222 !important;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -46,12 +51,11 @@ income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0
 bills = st.number_input("Bills", min_value=0.0, value=1200.0, step=50.0)
 debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
-remaining = income - bills - debt - savings
-
 total_outflow = bills + debt + savings
+remaining = income - total_outflow
 
-st.metric("Remaining", f"${remaining:,.2f}")
-st.markdown(f"**Total Outflow:** ${total_outflow:,.2f}")
+st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:36px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
+st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Expenses Inputs ---
@@ -71,15 +75,14 @@ expense_data = {
 # Convert to DataFrame for display
 expense_df = pd.DataFrame(list(expense_data.items()), columns=["Category", "Amount"])
 total_expenses = expense_df["Amount"].sum()
-
 st.dataframe(expense_df.style.format({"Amount": "$ {:.2f}"}))
-st.markdown(f"**Total Expenses:** ${total_expenses:,.2f}")
+st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Pie Chart for Monthly Spending ---
-st.markdown("<div class='section-box'><h4>📈 Monthly Spending Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots()
+# --- Spending Pie Chart ---
+st.markdown("<div class='section-box'><h4>📊 Monthly Spending Breakdown</h4>", unsafe_allow_html=True)
+fig, ax = plt.subplots(figsize=(3, 3))
 ax.pie(expense_df["Amount"], labels=expense_df["Category"], autopct='%1.1f%%', startangle=140)
-ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+ax.axis('equal')  # Equal aspect ratio ensures pie is drawn as a circle
 st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
