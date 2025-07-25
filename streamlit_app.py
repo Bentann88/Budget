@@ -1,8 +1,22 @@
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 st.set_page_config(page_title="Budget Dashboard", layout="centered")
+
+# --- Styling ---
+st.markdown("""
+    <style>
+    .main {
+        background-color: #f0f8ff; /* light blue background */
+        color: #000000;
+    }
+    .stApp {
+        background-color: #ffffff; /* white outer background */
+    }
+    </style>
+""", unsafe_allow_html=True)
 
 st.title("Budget & Net Worth Tracker")
 st.markdown("Enter your financial details below. Your summary and charts will update automatically.")
@@ -84,29 +98,27 @@ for bar in bars:
                 ha='center', va='bottom', fontsize=8)
 st.pyplot(fig)
 
-# --- Spending by Category Chart ---
-st.subheader("Spending by Category")
-expense_categories = ["Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other"]
-expense_values = [rent, utilities, car_payment, gas, groceries, subscriptions, other_expenses]
+st.markdown(f"**Balance:** ${balance:,.2f}")
 
-fig2, ax2 = plt.subplots(figsize=(4, 2.5))
-bars2 = ax2.bar(expense_categories, expense_values, color="#FF9800")
-ax2.set_ylabel("Amount ($)", fontsize=8)
-ax2.set_title("Detailed Spending Breakdown", fontsize=10)
+# --- Expense Breakdown Chart ---
+st.subheader("Spending by Category")
+category_labels = ["Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other"]
+category_values = [rent, utilities, car_payment, gas, groceries, subscriptions, other_expenses]
+fig2, ax2 = plt.subplots(figsize=(4.5, 2.5))
+bar_colors = plt.cm.Blues(range(100, 100 + 10*len(category_labels), 10))
+bar_positions = range(len(category_labels))
+bars2 = ax2.barh(bar_positions, category_values, color=bar_colors)
+ax2.set_yticks(bar_positions)
+ax2.set_yticklabels(category_labels, fontsize=8)
+ax2.invert_yaxis()
+ax2.set_xlabel("Amount ($)", fontsize=8)
+ax2.set_title("Spending by Category", fontsize=10)
+for i, v in enumerate(category_values):
+    ax2.text(v + max(category_values)*0.01, i, f"${v:,.0f}", va='center', fontsize=8)
 ax2.spines['top'].set_visible(False)
 ax2.spines['right'].set_visible(False)
-ax2.tick_params(axis='x', labelrotation=30, labelsize=8)
-ax2.tick_params(axis='y', labelsize=8)
-for bar in bars2:
-    height = bar.get_height()
-    ax2.annotate(f"${height:,.0f}",
-                 xy=(bar.get_x() + bar.get_width() / 2, height),
-                 xytext=(0, 3),
-                 textcoords="offset points",
-                 ha='center', va='bottom', fontsize=7)
+ax2.tick_params(axis='x', labelsize=8)
 st.pyplot(fig2)
-
-st.markdown(f"**Balance:** ${balance:,.2f}")
 
 # --- Historical View ---
 st.markdown("---")
@@ -119,7 +131,7 @@ if not history_df.empty:
 
 # --- Export Option ---
 st.markdown("---")
-st.subheader("📄 Export Current Month")
+st.subheader("📤 Export Current Month")
 data = {
     "Category": [
         "Income", "Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other Expenses", "Total Expenses",
