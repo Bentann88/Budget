@@ -30,8 +30,8 @@ st.markdown("""
             color: #000 !important;
         }
         .section-box h4 {
-            font-size: 18px !important;
-            font-weight: 600 !important;
+            font-size: 14px !important;
+            font-weight: 400 !important;
             color: #000 !important;
             margin-bottom: 10px;
         }
