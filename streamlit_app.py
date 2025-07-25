@@ -54,10 +54,25 @@ with st.container():
 # --- Cash Flow Summary ---
 st.markdown("<div class='section-box'><h4>💵 Cash Flow Summary</h4>", unsafe_allow_html=True)
 income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0)
-bills = st.number_input("Bills (Fixed Expenses)", min_value=0.0, value=1200.0, step=50.0)
-debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
-total_outflow = bills + debt + savings
+
+# --- Bills Section ---
+st.markdown("<div class='section-box'><h4>📑 Fixed Bills</h4>", unsafe_allow_html=True)
+bills_data = {
+    "Rent/Mortgage": st.number_input("Rent/Mortgage", min_value=0.0, value=1000.0, step=50.0),
+    "Utilities": st.number_input("Utilities", min_value=0.0, value=200.0, step=25.0),
+    "Internet": st.number_input("Internet", min_value=0.0, value=60.0, step=10.0),
+    "Insurance": st.number_input("Insurance", min_value=0.0, value=150.0, step=25.0),
+    "Phone Bill": st.number_input("Phone Bill", min_value=0.0, value=50.0, step=10.0)
+}
+bills_df = pd.DataFrame(list(bills_data.items()), columns=["Bill", "Amount"])
+total_bills = bills_df["Amount"].sum()
+st.dataframe(bills_df.style.format({"Amount": "$ {:.2f}"}))
+st.markdown(f"<div class='metric-box'>Total Bills: ${total_bills:,.2f}</div>", unsafe_allow_html=True)
+st.markdown("</div>", unsafe_allow_html=True)
+
+debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
+total_outflow = total_bills + debt + savings
 remaining = income - total_outflow
 savings_rate = (savings / income * 100) if income > 0 else 0
 
