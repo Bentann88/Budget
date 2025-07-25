@@ -25,9 +25,15 @@ st.markdown("""
             margin-bottom: 15px;
         }
         .metric-box {
-            font-size: 20px !important;
+            font-size: 18px !important;
             font-weight: 500 !important;
             color: #222 !important;
+        }
+        .section-box h4 {
+            font-size: 22px !important;
+            font-weight: 600 !important;
+            color: #222 !important;
+            margin-bottom: 10px;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -54,7 +60,7 @@ savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
 total_outflow = bills + debt + savings
 remaining = income - total_outflow
 
-st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:36px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
+st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:32px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
 st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
