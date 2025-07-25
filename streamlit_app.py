@@ -109,7 +109,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 st.markdown("<div class='section-box'><h4>📊 Allocation of Income</h4>", unsafe_allow_html=True)
 labels = ['Savings', 'Bills', 'Discretionary']
 values = [savings, total_bills, total_spending]
-colors = ['#A5D8FF', '#74C0FC', '#4DABF7']
+colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
 fig2, ax2 = plt.subplots(figsize=(1, 1))
 ax2.pie(values, labels=labels, colors=colors, startangle=90, autopct='%1.1f%%', textprops={'fontsize': 3})
 ax2.axis('equal')
