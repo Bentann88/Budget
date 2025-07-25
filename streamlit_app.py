@@ -81,7 +81,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Spending Pie Chart ---
 st.markdown("<div class='section-box'><h4>📊 Monthly Spending Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(3, 3))
+fig, ax = plt.subplots(figsize=(1.2, 1.2))
 ax.pie(expense_df["Amount"], labels=expense_df["Category"], autopct='%1.1f%%', startangle=140)
 ax.axis('equal')  # Equal aspect ratio ensures pie is drawn as a circle
 st.pyplot(fig)
