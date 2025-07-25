@@ -4,30 +4,34 @@ import numpy as np
 
 st.set_page_config(page_title="Monthly Budget", layout="wide")
 
-# --- Custom CSS for color styling and Montserrat font ---
+# --- Custom CSS for white background and blue text ---
 st.markdown("""
     <style>
         html, body, [class*="css"]  {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f5faff;
+            background-color: #ffffff;
+            color: #003366;
         }
         .title-box {
-            background-color: #ffccd5;
+            background-color: #cce5ff;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
         .section-box {
-            background-color: #e0f7fa;
+            background-color: #e6f2ff;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
+        }
+        .stMetricValue {
+            color: #003366 !important;
         }
     </style>
 """, unsafe_allow_html=True)
 
 # --- Header ---
-st.markdown("<div class='title-box'><h2 style='color: #333;'>📊 Monthly Budget Summary</h2></div>", unsafe_allow_html=True)
+st.markdown("<div class='title-box'><h2 style='color: #003366;'>📊 Monthly Budget Summary</h2></div>", unsafe_allow_html=True)
 
 # --- Month / Country Info ---
 with st.container():
