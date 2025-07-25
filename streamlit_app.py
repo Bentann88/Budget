@@ -9,7 +9,7 @@ st.markdown("""
     <style>
         html, body, [class*="css"]  {
             font-family: 'Montserrat', sans-serif;
-            background-color: #f5faff;
+            background-color: #cce5ff;
             color: #000;
         }
         .title-box {
