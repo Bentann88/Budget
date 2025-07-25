@@ -30,8 +30,8 @@ st.markdown("""
             color: #000 !important;
         }
         .section-box h4 {
-            font-size: 14px !important;
-            font-weight: 400 !important;
+            font-size: 18px !important;
+            font-weight: 600 !important;
             color: #000 !important;
             margin-bottom: 10px;
         }
@@ -110,8 +110,18 @@ st.markdown("<div class='section-box'><h4>📊 Allocation of Income</h4>", unsaf
 labels = ['Savings', 'Bills', 'Discretionary']
 values = [savings, total_bills, total_spending]
 colors = ['#1f77b4', '#ff7f0e', '#2ca02c']
-fig2, ax2 = plt.subplots(figsize=(1, 1))
-ax2.pie(values, labels=labels, colors=colors, startangle=90, autopct='%1.1f%%', textprops={'fontsize': 3})
+fig2, ax2 = plt.subplots(figsize=(2, 2))
+wedges, texts, autotexts = ax2.pie(
+    values,
+    labels=labels,
+    colors=colors,
+    startangle=90,
+    autopct='%1.1f%%',
+    textprops={'fontsize': 6},
+    wedgeprops={'linewidth': 0.5, 'edgecolor': 'white'}
+)
+for t in autotexts:
+    t.set_fontsize(5)
 ax2.axis('equal')
 st.pyplot(fig2)
 st.markdown("</div>", unsafe_allow_html=True)
