@@ -59,7 +59,7 @@ st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Expenses Inputs ---
-st.markdown("<div class='section-box'><h4>🗕️ Detailed Expenses</h4>", unsafe_allow_html=True)
+st.markdown("<div class='section-box'><h4>🗵️ Detailed Expenses</h4>", unsafe_allow_html=True)
 expense_data = {
     "Groceries": st.number_input("Groceries", min_value=0.0, value=300.0, step=10.0),
     "Restaurant": st.number_input("Restaurant", min_value=0.0, value=150.0, step=10.0),
@@ -77,18 +77,4 @@ expense_df = pd.DataFrame(list(expense_data.items()), columns=["Category", "Amou
 total_expenses = expense_df["Amount"].sum()
 st.dataframe(expense_df.style.format({"Amount": "$ {:.2f}"}))
 st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:,.2f}</div>", unsafe_allow_html=True)
-st.markdown("</div>", unsafe_allow_html=True)
-
-# --- Spending Pie Chart ---
-st.markdown("<div class='section-box'><h4>📊 Monthly Spending Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(0.75, 0.75))
-wedges, texts, autotexts = ax.pie(
-    expense_df["Amount"], 
-    labels=expense_df["Category"], 
-    autopct='%1.1f%%', 
-    startangle=140, 
-    textprops={'fontsize': 4}
-)
-ax.axis('equal')  # Equal aspect ratio ensures pie is drawn as a circle
-st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
