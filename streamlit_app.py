@@ -23,6 +23,9 @@ st.markdown("""
             border-radius: 10px;
             margin-bottom: 15px;
         }
+        .editable-table input {
+            font-size: 14px;
+        }
     </style>
 """, unsafe_allow_html=True)
 
@@ -50,28 +53,34 @@ remaining = income - bills - debt - savings
 st.metric("Remaining", f"${remaining:,.2f}")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Expenses Table (Editable) ---
-st.markdown("<div class='section-box'><h4>🧾 Expenses</h4>", unsafe_allow_html=True)
+# --- Editable Expenses Table ---
+st.markdown("<div class='section-box'><h4>🧾 Expenses (Editable Table)</h4>", unsafe_allow_html=True)
 
 expense_categories = ["Groceries", "Restaurant", "Pharmacy", "Fuel", "Car Maintenance", "Clothing", "Entertainment", "Health & Medical", "Personal Care"]
-projected_values = []
-actual_values = []
 
-for category in expense_categories:
-    col1, col2 = st.columns(2)
-    with col1:
-        proj = st.number_input(f"{category} - Projected", min_value=0.0, value=100.0, step=10.0, key=f"proj_{category}")
-    with col2:
-        act = st.number_input(f"{category} - Actual", min_value=0.0, value=90.0, step=10.0, key=f"act_{category}")
-    projected_values.append(proj)
-    actual_values.append(act)
+# Initialize or retrieve the session state DataFrame
+if "expense_df" not in st.session_state:
+    st.session_state.expense_df = pd.DataFrame({
+        "Category": expense_categories,
+        "Projected": [100.0]*len(expense_categories),
+        "Actual": [90.0]*len(expense_categories)
+    })
 
-expense_data = pd.DataFrame({
-    "Category": expense_categories,
-    "Projected": projected_values,
-    "Actual": actual_values
-})
-expense_data["Difference"] = expense_data["Projected"] - expense_data["Actual"]
+# Editable Data Editor
+edited_df = st.data_editor(
+    st.session_state.expense_df,
+    column_config={
+        "Projected": st.column_config.NumberColumn("Projected", min_value=0.0),
+        "Actual": st.column_config.NumberColumn("Actual", min_value=0.0)
+    },
+    num_rows="dynamic",
+    key="editable_expense_table"
+)
 
-st.dataframe(expense_data.style.format({"Projected": "$ {:.2f}", "Actual": "$ {:.2f}", "Difference": "$ {:.2f}"}))
+# Recalculate difference and update session state
+edited_df["Difference"] = edited_df["Projected"] - edited_df["Actual"]
+st.session_state.expense_df = edited_df
+
+# Display styled DataFrame
+st.dataframe(edited_df.style.format({"Projected": "$ {:.2f}", "Actual": "$ {:.2f}", "Difference": "$ {:.2f}"}))
 st.markdown("</div>", unsafe_allow_html=True)
