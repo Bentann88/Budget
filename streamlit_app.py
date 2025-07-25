@@ -87,7 +87,7 @@ wedges, texts, autotexts = ax.pie(
     labels=expense_df["Category"], 
     autopct='%1.1f%%', 
     startangle=140, 
-    textprops={'fontsize': 5}
+    textprops={'fontsize': 0.05}
 )
 ax.axis('equal')  # Equal aspect ratio ensures pie is drawn as a circle
 st.pyplot(fig)
