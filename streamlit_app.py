@@ -50,35 +50,28 @@ remaining = income - bills - debt - savings
 st.metric("Remaining", f"${remaining:,.2f}")
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Income Table ---
-st.markdown("<div class='section-box'><h4>💼 Income Summary</h4>", unsafe_allow_html=True)
-income_data = pd.DataFrame({
-    "Source": ["Paycheck 1", "Paycheck 2", "Commission", "Other"],
-    "Date": ["Jan 10", "Jan 24", "Jan 15", "Jan 30"],
-    "Amount": [1200, 1200, 400, 200]
-})
-st.dataframe(income_data.style.format({"Amount": "$ {:.2f}"}))
-st.markdown("</div>", unsafe_allow_html=True)
+# --- Expenses Table (Editable) ---
+st.markdown("<div class='section-box'><h4>🧾 Expenses</h4>", unsafe_allow_html=True)
 
-# --- Bills Table ---
-st.markdown("<div class='section-box'><h4>🧾 Bills</h4>", unsafe_allow_html=True)
-bills_data = pd.DataFrame({
-    "Category": ["Electricity", "Internet", "Rent", "Spotify"],
-    "Projected": [150, 90, 900, 12]
-})
-st.dataframe(bills_data.style.format({"Projected": "$ {:.2f}"}))
-st.markdown("</div>", unsafe_allow_html=True)
+expense_categories = ["Groceries", "Restaurant", "Pharmacy", "Fuel", "Car Maintenance", "Clothing", "Entertainment", "Health & Medical", "Personal Care"]
+projected_values = []
+actual_values = []
 
-# --- Expenses Table ---
-st.markdown("<div class='section-box'><h4>🧾 Detailed Expenses</h4>", unsafe_allow_html=True)
+for category in expense_categories:
+    col1, col2 = st.columns(2)
+    with col1:
+        proj = st.number_input(f"{category} - Projected", min_value=0.0, value=100.0, step=10.0, key=f"proj_{category}")
+    with col2:
+        act = st.number_input(f"{category} - Actual", min_value=0.0, value=90.0, step=10.0, key=f"act_{category}")
+    projected_values.append(proj)
+    actual_values.append(act)
+
 expense_data = pd.DataFrame({
-    "Category": [
-        "Groceries", "Restaurant", "Pharmacy", "Fuel", "Car Maintenance",
-        "Clothing", "Entertainment", "Health & Medical", "Personal Care"
-    ],
-    "Projected": [300, 100, 75, 120, 200, 80, 90, 60, 50],
-    "Actual": [290, 110, 70, 100, 220, 90, 85, 70, 55]
+    "Category": expense_categories,
+    "Projected": projected_values,
+    "Actual": actual_values
 })
 expense_data["Difference"] = expense_data["Projected"] - expense_data["Actual"]
+
 st.dataframe(expense_data.style.format({"Projected": "$ {:.2f}", "Actual": "$ {:.2f}", "Difference": "$ {:.2f}"}))
 st.markdown("</div>", unsafe_allow_html=True)
