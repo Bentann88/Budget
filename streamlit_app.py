@@ -52,16 +52,18 @@ with st.container():
         country = st.selectbox("Country", ["United States", "Canada", "UK"])
 
 # --- Cash Flow Summary ---
-st.markdown("<div class='section-box'><h4> Cash Flow Summary</h4>", unsafe_allow_html=True)
+st.markdown("<div class='section-box'><h4>💵 Cash Flow Summary</h4>", unsafe_allow_html=True)
 income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0)
 bills = st.number_input("Bills", min_value=0.0, value=1200.0, step=50.0)
 debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
 total_outflow = bills + debt + savings
 remaining = income - total_outflow
+savings_rate = (savings / income * 100) if income > 0 else 0
 
 st.markdown(f"<div class='metric-box'>Remaining<br><span style='font-size:32px;'>${remaining:,.2f}</span></div>", unsafe_allow_html=True)
 st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>", unsafe_allow_html=True)
+st.markdown(f"<div class='metric-box'>Savings Rate: {savings_rate:.1f}%</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Expenses Inputs ---
@@ -86,15 +88,23 @@ st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Minimal Horizontal Bar Chart for Spending Categories ---
-st.markdown("<div class='section-box'><h4> Expense Category Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(.50, .50))  # Reduced size further
-ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
-ax.set_xlabel("Amount ($)", fontsize=2)
-ax.set_yticklabels(expense_df["Category"], fontsize=.50)
-ax.tick_params(axis='x', labelsize=2.5)
-ax.tick_params(axis='y', labelsize=2.5)
-ax.set_xticks([])  # Optional: hide x-axis ticks for minimal look
+st.markdown("<div class='section-box'><h4>📊 Expense Category Breakdown</h4>", unsafe_allow_html=True)
+fig, ax = plt.subplots(figsize=(3.5, 1.8))  # adjusted size
+ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")
+ax.set_xlabel("Amount ($)", fontsize=6)
+ax.set_yticklabels(expense_df["Category"], fontsize=5)
+ax.tick_params(axis='x', labelsize=5)
+ax.tick_params(axis='y', labelsize=5)
+ax.set_xticks([])
 for i, v in enumerate(expense_df["Amount"]):
-    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=3)
+    ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=5)
 st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
+
+# --- Optional Export Button ---
+st.download_button(
+    label="📥 Download Budget Summary",
+    data=expense_df.to_csv(index=False),
+    file_name=f"budget_summary_{month}.csv",
+    mime="text/csv"
+)
