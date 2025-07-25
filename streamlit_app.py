@@ -54,7 +54,7 @@ with st.container():
 # --- Cash Flow Summary ---
 st.markdown("<div class='section-box'><h4>💵 Cash Flow Summary</h4>", unsafe_allow_html=True)
 income = st.number_input("Total Income", min_value=0.0, value=4800.0, step=100.0)
-bills = st.number_input("Bills", min_value=0.0, value=1200.0, step=50.0)
+bills = st.number_input("Bills (Fixed Expenses)", min_value=0.0, value=1200.0, step=50.0)
 debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
 total_outflow = bills + debt + savings
@@ -66,9 +66,9 @@ st.markdown(f"<div class='metric-box'>Total Outflow: ${total_outflow:,.2f}</div>
 st.markdown(f"<div class='metric-box'>Savings Rate: {savings_rate:.1f}%</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
-# --- Detailed Expenses Inputs ---
-st.markdown("<div class='section-box'><h4>🗕️ Detailed Expenses</h4>", unsafe_allow_html=True)
-expense_data = {
+# --- Detailed Spending (Discretionary) ---
+st.markdown("<div class='section-box'><h4>🛍️ Discretionary Spending</h4>", unsafe_allow_html=True)
+spending_data = {
     "Groceries": st.number_input("Groceries", min_value=0.0, value=300.0, step=10.0),
     "Restaurant": st.number_input("Restaurant", min_value=0.0, value=150.0, step=10.0),
     "Pharmacy": st.number_input("Pharmacy", min_value=0.0, value=60.0, step=10.0),
@@ -81,22 +81,22 @@ expense_data = {
 }
 
 # Convert to DataFrame for display
-expense_df = pd.DataFrame(list(expense_data.items()), columns=["Category", "Amount"])
-total_expenses = expense_df["Amount"].sum()
-st.dataframe(expense_df.style.format({"Amount": "$ {:.2f}"}))
-st.markdown(f"<div class='metric-box'>Total Detailed Expenses: ${total_expenses:,.2f}</div>", unsafe_allow_html=True)
+spending_df = pd.DataFrame(list(spending_data.items()), columns=["Category", "Amount"])
+total_spending = spending_df["Amount"].sum()
+st.dataframe(spending_df.style.format({"Amount": "$ {:.2f}"}))
+st.markdown(f"<div class='metric-box'>Total Discretionary Spending: ${total_spending:,.2f}</div>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Minimal Horizontal Bar Chart for Spending Categories ---
-st.markdown("<div class='section-box'><h4>📊 Expense Category Breakdown</h4>", unsafe_allow_html=True)
-fig, ax = plt.subplots(figsize=(3.5, 1.8))  # adjusted size
-ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")
+st.markdown("<div class='section-box'><h4>📊 Spending Breakdown</h4>", unsafe_allow_html=True)
+fig, ax = plt.subplots(figsize=(3.5, 1.8))
+ax.barh(spending_df["Category"], spending_df["Amount"], color="#90caf9")
 ax.set_xlabel("Amount ($)", fontsize=6)
-ax.set_yticklabels(expense_df["Category"], fontsize=5)
+ax.set_yticklabels(spending_df["Category"], fontsize=5)
 ax.tick_params(axis='x', labelsize=5)
 ax.tick_params(axis='y', labelsize=5)
 ax.set_xticks([])
-for i, v in enumerate(expense_df["Amount"]):
+for i, v in enumerate(spending_df["Amount"]):
     ax.text(v + 2, i, f"${v:.0f}", va='center', fontsize=5)
 st.pyplot(fig)
 st.markdown("</div>", unsafe_allow_html=True)
@@ -104,7 +104,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 # --- Optional Export Button ---
 st.download_button(
     label="📥 Download Budget Summary",
-    data=expense_df.to_csv(index=False),
+    data=spending_df.to_csv(index=False),
     file_name=f"budget_summary_{month}.csv",
     mime="text/csv"
 )
