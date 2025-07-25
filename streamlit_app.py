@@ -61,23 +61,24 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 # --- Chart Section ---
 st.markdown("---")
 st.subheader("Cash Flow")
-fig, ax = plt.subplots(figsize=(4, 3))  # Adjusted size for cleaner appearance
+fig, ax = plt.subplots(figsize=(3, 2.2))  # More compact size
 labels = ["Income", "Expenses"]
 values = [income, expenses]
 colors = ['#4CAF50', '#F44336']
-bar_width = 0.3  # Thinner bars
+bar_width = 0.4
 bars = ax.bar(labels, values, color=colors, width=bar_width)
 ax.set_ylabel("Amount ($)")
-ax.set_title("Income vs Expenses")
+ax.set_title("Income vs Expenses", fontsize=10)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
+ax.tick_params(axis='both', which='major', labelsize=8)
 for bar in bars:
     height = bar.get_height()
     ax.annotate(f"${height:,.0f}",
                 xy=(bar.get_x() + bar.get_width() / 2, height),
-                xytext=(0, 5),  # offset
+                xytext=(0, 4),
                 textcoords="offset points",
-                ha='center', va='bottom', fontsize=9)
+                ha='center', va='bottom', fontsize=8)
 st.pyplot(fig)
 
 st.markdown(f"**Balance:** ${balance:,.2f}")
