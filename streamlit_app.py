@@ -90,7 +90,7 @@ st.markdown("<div class='section-box'><h4> Expense Category Breakdown</h4>", uns
 fig, ax = plt.subplots(figsize=(1, 0.25))  # Reduced size further
 ax.barh(expense_df["Category"], expense_df["Amount"], color="#90caf9")  # pastel blue
 ax.set_xlabel("Amount ($)", fontsize=6)
-ax.set_yticklabels(expense_df["Category"], fontsize=5)
+ax.set_yticklabels(expense_df["Category"], fontsize=.25)
 ax.tick_params(axis='x', labelsize=5)
 ax.tick_params(axis='y', labelsize=5)
 ax.set_xticks([])  # Optional: hide x-axis ticks for minimal look
