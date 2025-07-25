@@ -4,7 +4,7 @@ import numpy as np
 
 st.set_page_config(page_title="Monthly Budget", layout="wide")
 
-# --- Custom CSS for color styling and Montserrat font ---
+# --- Custom CSS for pastel labels and Montserrat font ---
 st.markdown("""
     <style>
         html, body, [class*="css"]  {
@@ -12,16 +12,24 @@ st.markdown("""
             background-color: #f5faff;
         }
         .title-box {
-            background-color: #ffccd5;
+            background-color: #ffd6e0;
             padding: 20px;
             border-radius: 10px;
             margin-bottom: 20px;
         }
         .section-box {
-            background-color: #e0f7fa;
+            background-color: #e3f2fd;
             padding: 15px;
             border-radius: 10px;
             margin-bottom: 15px;
+        }
+        .metric-label {
+            background-color: #dcedc8;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            display: inline-block;
+            color: #333;
         }
     </style>
 """, unsafe_allow_html=True)
@@ -47,7 +55,7 @@ debt = st.number_input("Debt Payments", min_value=0.0, value=500.0, step=50.0)
 savings = st.number_input("Savings", min_value=0.0, value=1000.0, step=50.0)
 remaining = income - bills - debt - savings
 
-st.metric("Remaining", f"${remaining:,.2f}")
+st.markdown(f"<span class='metric-label'>Remaining: ${remaining:,.2f}</span>", unsafe_allow_html=True)
 st.markdown("</div>", unsafe_allow_html=True)
 
 # --- Detailed Expenses Inputs ---
