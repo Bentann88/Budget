@@ -61,13 +61,16 @@ st.metric(label="Total Debt", value=f"${debt:,.2f}")
 # --- Chart Section ---
 st.markdown("---")
 st.subheader("Cash Flow")
-fig, ax = plt.subplots(figsize=(3, 2.2))  # More compact size
+fig, ax = plt.subplots(figsize=(3, 2.2))
 labels = ["Income", "Expenses"]
 values = [income, expenses]
 colors = ['#4CAF50', '#F44336']
-bar_width = 0.4
-bars = ax.bar(labels, values, color=colors, width=bar_width)
-ax.set_ylabel("Amount ($)")
+bar_width = 0.2
+x = range(len(labels))
+bars = ax.bar(x, values, color=colors, width=bar_width)
+ax.set_xticks(x)
+ax.set_xticklabels(labels, fontsize=8)
+ax.set_ylabel("Amount ($)", fontsize=8)
 ax.set_title("Income vs Expenses", fontsize=10)
 ax.spines['top'].set_visible(False)
 ax.spines['right'].set_visible(False)
@@ -80,6 +83,28 @@ for bar in bars:
                 textcoords="offset points",
                 ha='center', va='bottom', fontsize=8)
 st.pyplot(fig)
+
+# --- Spending by Category Chart ---
+st.subheader("Spending by Category")
+expense_categories = ["Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other"]
+expense_values = [rent, utilities, car_payment, gas, groceries, subscriptions, other_expenses]
+
+fig2, ax2 = plt.subplots(figsize=(4, 2.5))
+bars2 = ax2.bar(expense_categories, expense_values, color="#FF9800")
+ax2.set_ylabel("Amount ($)", fontsize=8)
+ax2.set_title("Detailed Spending Breakdown", fontsize=10)
+ax2.spines['top'].set_visible(False)
+ax2.spines['right'].set_visible(False)
+ax2.tick_params(axis='x', labelrotation=30, labelsize=8)
+ax2.tick_params(axis='y', labelsize=8)
+for bar in bars2:
+    height = bar.get_height()
+    ax2.annotate(f"${height:,.0f}",
+                 xy=(bar.get_x() + bar.get_width() / 2, height),
+                 xytext=(0, 3),
+                 textcoords="offset points",
+                 ha='center', va='bottom', fontsize=7)
+st.pyplot(fig2)
 
 st.markdown(f"**Balance:** ${balance:,.2f}")
 
@@ -94,7 +119,7 @@ if not history_df.empty:
 
 # --- Export Option ---
 st.markdown("---")
-st.subheader("📤 Export Current Month")
+st.subheader("📄 Export Current Month")
 data = {
     "Category": [
         "Income", "Rent", "Utilities", "Car Payment", "Gas", "Groceries", "Subscriptions", "Other Expenses", "Total Expenses",
